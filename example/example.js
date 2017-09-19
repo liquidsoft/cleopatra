@@ -1,4 +1,7 @@
-const {app} = require("../build");
+"use strict";
+/*eslint no-console:0 no-unused-vars:0*/
+
+const {app} = require("../lib");
 
 /*
  -------------------------------
@@ -7,20 +10,20 @@ const {app} = require("../build");
  */
 
 app.pipeline("goodbye").pipe((payload) => {
-    console.log("Goodbye!");
+	console.log("Goodbye!");
 });
 
-app.pipeline("example")
-    .pipe((payload) => {
-        console.log(payload);
-        return new Promise((resolve) => {
-            setTimeout(() => {
-                resolve();
+app.pipeline("example").pipe((payload) => {
 
-            }, 2500);
-        });
-    })
-    .pipe(app.pipeline("goodbye"));
+	console.log(payload);
+	return new Promise((resolve) => {
+		setTimeout(() => {
+			resolve();
+
+		}, 2500);
+	});
+
+}).pipe(app.pipeline("goodbye"));
 
 /*
  -------------------------------
@@ -29,5 +32,5 @@ app.pipeline("example")
  */
 
 app.dispatch("example", {
-    someProperty: "testing"
+	someProperty: "testing"
 });
