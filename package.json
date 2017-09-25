@@ -1,8 +1,8 @@
 {
   "name": "cleopatra",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "Module for creating pipelines",
-  "main": "lib/index.js",
+  "main": "build/index.js",
   "keywords": [
     "pipeline"
   ],
@@ -13,8 +13,16 @@
   },
   "devDependencies": {
     "babel-eslint": "^8.0.0",
-    "eslint": "^4.6.1"
+    "eslint": "^4.6.1",
+    "babel-core": "^6.26.0",
+    "babel-preset-es2015": "^6.24.1",
+    "gulp": "^3.9.1",
+    "gulp-babel": "^7.0.0"
   },
   "author": "Robert Ontiu",
-  "license": "MIT"
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/liquidsoft/cleopatra.git"
+  }
 }
