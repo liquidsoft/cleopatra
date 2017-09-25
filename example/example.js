@@ -1,7 +1,7 @@
 "use strict";
 /*eslint no-console:0 no-unused-vars:0*/
 
-const {app} = require("../lib");
+const {createPipeline} = require("./../lib");
 
 /*
  -------------------------------
@@ -9,11 +9,11 @@ const {app} = require("../lib");
  -------------------------------
  */
 
-app.pipeline("goodbye").pipe((payload) => {
+const goodbyePipeline = createPipeline().pipe((payload) => {
 	console.log("Goodbye!");
 });
 
-app.pipeline("example").pipe((payload) => {
+const examplePipeline = createPipeline().pipe((payload) => {
 
 	console.log(payload);
 	return new Promise((resolve) => {
@@ -23,7 +23,7 @@ app.pipeline("example").pipe((payload) => {
 		}, 2500);
 	});
 
-}).pipe(app.pipeline("goodbye"));
+}).pipe(goodbyePipeline);
 
 /*
  -------------------------------
@@ -31,6 +31,6 @@ app.pipeline("example").pipe((payload) => {
  -------------------------------
  */
 
-app.dispatch("example", {
+examplePipeline.dispatch({
 	someProperty: "testing"
 });

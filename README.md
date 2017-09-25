@@ -1,15 +1,15 @@
 # cleopatra
-Pipeline driven application container.
+Module for creating pipelines
 
 ```js
-const {app} = require("cleopatra");
+const {createPipeline} = require("cleopatra");
 
-app.pipeline("log").pipe(function(payload) {
+const logPipeline = createPipeline().pipe(function(payload) {
     console.log(payload);
     return payload;
 });
 
-app.pipeline("example").pipe(function(payload) {
+const mainPipeline = createPipeline().pipe(function(payload) {
     payload.firstPipe = "Passed through first pipe.";
     
     // You can return the actual payload
@@ -22,7 +22,11 @@ app.pipeline("example").pipe(function(payload) {
     payload.someOtherProperty = "Pushed another property into payload.";
     return payload;
     
-}).pipe(app.pipeline("log"));
+}).pipe(logPipeline);
 
-app.dispatch("example", { someProperty: "This is the payload object." });
+// The capture method is similar to a pipe but is attached at the end
+// of the pipeline
+mainPipeline.capture(payload => console.log("Finished"));
+
+mainPipeline.dispatch({ someProperty: "This is the payload object." });
 ```
