@@ -43,7 +43,7 @@ var Pipeline = function () {
 			var payload = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
 			var result = toPromise(payload);
-			var queue = this.queue.join(this.capturer ? [this.capturer] : []);
+			var queue = this.queue.concat(this.capturer ? [this.capturer] : []);
 
 			queue.forEach(function (next) {
 				result = result.then(next instanceof Pipeline ? function (payload) {
