@@ -12,6 +12,7 @@ var Pipeline = function () {
 
 		this.queue = [];
 		this.capturer = null;
+		this.reporter = null;
 	}
 
 	_createClass(Pipeline, [{
@@ -38,6 +39,12 @@ var Pipeline = function () {
 			return this;
 		}
 	}, {
+		key: "report",
+		value: function report(reporter) {
+			this.reporter = reporter;
+			return this;
+		}
+	}, {
 		key: "dispatch",
 		value: function dispatch() {
 			var payload = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
@@ -46,10 +53,16 @@ var Pipeline = function () {
 			var queue = this.queue.concat(this.capturer ? [this.capturer] : []);
 
 			queue.forEach(function (next) {
-				result = result.then(next instanceof Pipeline ? function (payload) {
-					return next.dispatch(payload);
-				} : next);
+				result = result.then(function (payload) {
+					return toPromise(payload).then(next instanceof Pipeline ? function (payload) {
+						return next.dispatch(payload);
+					} : next);
+				});
 			});
+
+			if (typeof this.reporter === "function") {
+				result = result.catch(this.reporter);
+			}
 
 			return result;
 		}
