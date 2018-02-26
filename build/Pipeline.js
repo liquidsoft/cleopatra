@@ -6,6 +6,24 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 var toPromise = require("./util").toPromise;
 
+var pipelineInterceptor = function pipelineInterceptor(pipe) {
+	return pipe instanceof Pipeline ? function (payload) {
+		return pipe.dispatch(payload);
+	} : pipe;
+};
+
+var getInterception = function getInterception(interceptors, pipe) {
+	var interceptor = void 0;
+	var interception = pipe;
+
+	while (typeof interception !== "function" && interceptors.length > 0) {
+		interceptor = interceptors.shift();
+		interception = interceptor(pipe);
+	}
+
+	return typeof interception === "function" ? interception : null;
+};
+
 var Pipeline = function () {
 	function Pipeline() {
 		_classCallCheck(this, Pipeline);
@@ -13,12 +31,19 @@ var Pipeline = function () {
 		this.queue = [];
 		this.capturer = null;
 		this.reporter = null;
+		this.interceptors = [pipelineInterceptor];
 	}
 
 	_createClass(Pipeline, [{
 		key: "pipe",
 		value: function pipe(next) {
 			this.queue.push(next);
+			return this;
+		}
+	}, {
+		key: "intercept",
+		value: function intercept(interceptor) {
+			this.interceptors.push(interceptor);
 			return this;
 		}
 	}, {
@@ -47,17 +72,21 @@ var Pipeline = function () {
 	}, {
 		key: "dispatch",
 		value: function dispatch() {
+			var _this = this;
+
 			var payload = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
 			var result = toPromise(payload);
 			var queue = this.queue.concat(this.capturer ? [this.capturer] : []);
 
 			queue.forEach(function (next) {
-				result = result.then(function (payload) {
-					return toPromise(payload).then(next instanceof Pipeline ? function (payload) {
-						return next.dispatch(payload);
-					} : next);
-				});
+				var callback = getInterception(_this.interceptors, next);
+
+				if (typeof callback === "function") {
+					result = result.then(function (payload) {
+						return toPromise(payload).then(callback);
+					});
+				}
 			});
 
 			if (typeof this.reporter === "function") {
