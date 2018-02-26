@@ -17,10 +17,15 @@ class MyPipe {
 const myPipeInterceptor = (pipe) => {
 	return pipe instanceof MyPipe ?
 		payload => pipe.runStuff(payload) :
-		pipe;
+		null;
 };
 
-const interceptedPipeline = createPipeline().intercept(myPipeInterceptor).pipe(new MyPipe());
+const interceptedPipeline = createPipeline()
+	.intercept(myPipeInterceptor).pipe(new MyPipe())
+	.capture(payload => {
+		console.log("done intercepting");
+		return payload;
+	});
 
 /////////////////////////////////
 // Sample pipeline with report and throw

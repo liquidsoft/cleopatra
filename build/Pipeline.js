@@ -9,16 +9,20 @@ var toPromise = require("./util").toPromise;
 var pipelineInterceptor = function pipelineInterceptor(pipe) {
 	return pipe instanceof Pipeline ? function (payload) {
 		return pipe.dispatch(payload);
-	} : pipe;
+	} : null;
 };
 
 var getInterception = function getInterception(interceptors, pipe) {
 	var interceptor = void 0;
-	var interception = pipe;
+	var interception = void 0;
 
 	while (typeof interception !== "function" && interceptors.length > 0) {
 		interceptor = interceptors.shift();
 		interception = interceptor(pipe);
+	}
+
+	if (typeof interception !== "function") {
+		interception = pipe;
 	}
 
 	return typeof interception === "function" ? interception : null;
@@ -80,7 +84,7 @@ var Pipeline = function () {
 			var queue = this.queue.concat(this.capturer ? [this.capturer] : []);
 
 			queue.forEach(function (next) {
-				var callback = getInterception(_this.interceptors, next);
+				var callback = getInterception(_this.interceptors.slice(), next);
 
 				if (typeof callback === "function") {
 					result = result.then(function (payload) {
