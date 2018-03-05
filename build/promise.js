@@ -3,6 +3,8 @@
 var _require = require("es6-promise"),
     Promise = _require.Promise;
 
+var assign = require("object-assign");
+
 /**
  * Transforms any input into a promise
  *
@@ -15,8 +17,6 @@ var _require = require("es6-promise"),
  * @param payload
  * @returns {Promise}
  */
-
-
 function toPromise(payload) {
 	if (payload instanceof Promise) {
 		return payload;
@@ -38,7 +38,7 @@ function toPromise(payload) {
  * @param promise
  * @returns {*}
  */
-function resolve(promise) {
+function resolvePromise(promise) {
 	if (promise instanceof Promise) {
 		return promise;
 	}
@@ -72,6 +72,6 @@ function resolve(promise) {
 }
 
 module.exports = {
-	toPromise: toPromise,
-	resolve: resolve
+	toPromise,
+	resolvePromise
 };

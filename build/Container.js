@@ -4,30 +4,63 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var createPipeline = require("./createPipeline");
+var _require = require("./pipeline"),
+    createPipeline = _require.createPipeline;
 
 var Container = function () {
 	function Container() {
 		_classCallCheck(this, Container);
 
 		this.pipelines = {};
+		this.errorHandler = null;
 	}
 
 	_createClass(Container, [{
 		key: "pipeline",
 		value: function pipeline(name) {
-			return this.pipelines[name] || (this.pipelines[name] = createPipeline());
+			if (this.pipelines[name] == undefined) {
+				this.pipelines[name] = createPipeline();
+				this.pipelines[name].report(this.errorHandler);
+			}
+
+			return this.pipelines[name];
+		}
+	}, {
+		key: "pipe",
+		value: function pipe(name) {
+			var _pipeline;
+
+			for (var _len = arguments.length, nodes = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+				nodes[_key - 1] = arguments[_key];
+			}
+
+			(_pipeline = this.pipeline(name)).through.apply(_pipeline, nodes);
+			return this;
 		}
 	}, {
 		key: "dispatch",
-		value: function dispatch(name) {
-			var payload = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-
+		value: function dispatch(name, payload) {
 			return this.pipeline(name).dispatch(payload);
+		}
+	}, {
+		key: "report",
+		value: function report(errorHandler) {
+			this.errorHandler = errorHandler;
+			return this;
 		}
 	}]);
 
 	return Container;
 }();
 
-module.exports = Container;
+// generator
+
+
+var createContainer = function createContainer() {
+	return new Container();
+};
+
+module.exports = {
+	Container,
+	createContainer
+};

@@ -1,12 +1,22 @@
 "use strict";
 
-var util = require("./util");
-var createPipeline = require("./createPipeline");
-var createContainer = require("./createContainer");
+var _require = require("./promise"),
+    toPromise = _require.toPromise,
+    resolve = _require.resolve;
+
+var _require2 = require("./interceptor"),
+    registerGlobalInterceptor = _require2.registerGlobalInterceptor;
+
+var _require3 = require("./pipeline"),
+    createPipeline = _require3.createPipeline;
+
+var _require4 = require("./container"),
+    createContainer = _require4.createContainer;
 
 module.exports = {
-	toPromise: util.toPromise,
-	resolve: util.resolve,
-	createPipeline: createPipeline,
-	createContainer: createContainer
+	toPromise,
+	resolve,
+	registerGlobalInterceptor,
+	createPipeline,
+	createContainer
 };

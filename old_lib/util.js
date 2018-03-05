@@ -1,7 +1,6 @@
 "use strict";
 
-var _require = require("es6-promise"),
-    Promise = _require.Promise;
+const {Promise} = require("es6-promise");
 
 /**
  * Transforms any input into a promise
@@ -15,8 +14,6 @@ var _require = require("es6-promise"),
  * @param payload
  * @returns {Promise}
  */
-
-
 function toPromise(payload) {
 	if (payload instanceof Promise) {
 		return payload;
@@ -26,7 +23,7 @@ function toPromise(payload) {
 		return toPromise(payload());
 	}
 
-	return new Promise(function (resolve, reject) {
+	return new Promise((resolve, reject) => {
 		payload === false ? reject() : resolve(payload);
 	});
 }
@@ -43,27 +40,29 @@ function resolve(promise) {
 		return promise;
 	}
 
-	var promises = [];
+	let promises = [];
 
 	if (promise instanceof Array) {
-		promise.forEach(function (promiseEntry) {
+		promise.forEach((promiseEntry) => {
 			promises.push(toPromise(promiseEntry));
 		});
-	} else if (promise && typeof promise === "object") {
-		Object.keys(promise).forEach(function (key) {
+	}
+	else if (promise && (typeof promise === "object")) {
+		Object.keys(promise).forEach((key) => {
 			promises.push(toPromise(promise[key]));
 		});
-	} else {
+	}
+	else {
 		return toPromise(promise);
 	}
 
-	return Promise.all(promises).then(function (result) {
+	return Promise.all(promises).then((result) => {
 		if (promise instanceof Array) {
 			return result;
 		}
 
-		var response = {};
-		Object.keys(promise).forEach(function (key, index) {
+		let response = {};
+		Object.keys(promise).forEach((key, index) => {
 			response[key] = result[index];
 		});
 

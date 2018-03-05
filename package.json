@@ -1,23 +1,23 @@
 {
   "name": "cleopatra",
-  "version": "0.1.9",
-  "description": "Module for creating pipelines",
+  "version": "0.2.0",
+  "description": "Module for creating and managing promise based pipelines",
   "main": "build/index.js",
   "keywords": [
+    "promise",
     "pipeline"
   ],
   "dependencies": {
     "es6-promise": "^4.1.1",
-    "es6-symbol": "^3.1.1",
     "object-assign": "^4.1.1"
   },
   "devDependencies": {
-    "babel-eslint": "^8.0.0",
-    "eslint": "^4.6.1",
     "babel-core": "^6.26.0",
-    "babel-preset-es2015": "^6.24.1",
+    "babel-eslint": "^8.0.0",
+    "babel-preset-env": "^1.6.1",
+    "eslint": "^4.6.1",
     "gulp": "^3.9.1",
-    "gulp-babel": "^7.0.0"
+    "gulp-babel": "^7.0.1"
   },
   "author": "Robert Ontiu",
   "license": "MIT",
