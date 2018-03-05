@@ -1,5 +1,5 @@
 # cleopatra
-Module for creating pipelines and managing promise based pipelines.
+Module for creating and managing promise based pipelines.
 
 ```js
 const {createPipeline} = require("cleopatra");
