@@ -26,7 +26,9 @@ var Pipeline = function () {
 
 		this.firstNode = null;
 		this.lastNode = null;
+		this.eagerNodes = [];
 		this.innerNodes = [];
+		this.deferedNodes = [];
 		this.errorHandler = null;
 		this.interceptors = [];
 
@@ -71,10 +73,38 @@ var Pipeline = function () {
 			return this;
 		}
 	}, {
+		key: "eager",
+		value: function eager() {
+			for (var _len2 = arguments.length, nodes = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+				nodes[_key2] = arguments[_key2];
+			}
+
+			if (arguments.length === 0) {
+				return [].concat(this.eagerNodes);
+			}
+
+			this.eagerNodes = this.eagerNodes.concat(nodes);
+			return this;
+		}
+	}, {
+		key: "defer",
+		value: function defer() {
+			for (var _len3 = arguments.length, nodes = Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
+				nodes[_key3] = arguments[_key3];
+			}
+
+			if (arguments.length === 0) {
+				return [].concat(this.deferedNodes);
+			}
+
+			this.deferedNodes = this.deferedNodes.concat(nodes);
+			return this;
+		}
+	}, {
 		key: "intercept",
 		value: function intercept() {
-			for (var _len2 = arguments.length, interceptors = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
-				interceptors[_key2] = arguments[_key2];
+			for (var _len4 = arguments.length, interceptors = Array(_len4), _key4 = 0; _key4 < _len4; _key4++) {
+				interceptors[_key4] = arguments[_key4];
 			}
 
 			this.interceptors = this.interceptors.concat(interceptors);
@@ -118,7 +148,7 @@ var Pipeline = function () {
 	}, {
 		key: "nodes",
 		get: function get() {
-			var nodes = [].concat(this.innerNodes);
+			var nodes = [].concat(this.eagerNodes, this.innerNodes, this.deferedNodes);
 
 			if (this.firstNode != undefined) {
 				nodes.unshift(this.firstNode);
