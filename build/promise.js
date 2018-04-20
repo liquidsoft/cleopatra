@@ -1,5 +1,7 @@
 "use strict";
 
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
 var _require = require("es6-promise"),
     Promise = _require.Promise;
 
@@ -49,7 +51,7 @@ function resolvePromise(promise) {
 		promise.forEach(function (promiseEntry) {
 			promises.push(toPromise(promiseEntry));
 		});
-	} else if (promise && typeof promise === "object") {
+	} else if (promise && (typeof promise === "undefined" ? "undefined" : _typeof(promise)) === "object") {
 		Object.keys(promise).forEach(function (key) {
 			promises.push(toPromise(promise[key]));
 		});
@@ -72,6 +74,6 @@ function resolvePromise(promise) {
 }
 
 module.exports = {
-	toPromise,
-	resolvePromise
+	toPromise: toPromise,
+	resolvePromise: resolvePromise
 };

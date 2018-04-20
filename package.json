@@ -1,6 +1,6 @@
 {
   "name": "cleopatra",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "Module for creating and managing promise based pipelines",
   "main": "build/index.js",
   "keywords": [

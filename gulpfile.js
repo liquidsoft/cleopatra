@@ -14,7 +14,12 @@ gulp.task("default", ["build"], () => {
 gulp.task("build", () => {
 	return gulp.src("./lib/**/*.js")
 		.pipe(babel({
-			presets: [["env", {targets: {node: "4"}}]]
+			presets: [["env", {
+				targets: {
+					node: "4",
+					browsers: ["last 2 versions", "Explorer >= 10"]
+				}
+			}]]
 		}))
 		.pipe(gulp.dest("./build"));
 });

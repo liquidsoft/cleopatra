@@ -39,6 +39,6 @@ function registerGlobalInterceptor() {
 }
 
 module.exports = {
-	interceptNode,
-	registerGlobalInterceptor
+	interceptNode: interceptNode,
+	registerGlobalInterceptor: registerGlobalInterceptor
 };

@@ -173,6 +173,6 @@ var createPipeline = function createPipeline() {
 };
 
 module.exports = {
-	Pipeline,
-	createPipeline
+	Pipeline: Pipeline,
+	createPipeline: createPipeline
 };

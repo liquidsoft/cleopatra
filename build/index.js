@@ -14,9 +14,9 @@ var _require4 = require("./container"),
     createContainer = _require4.createContainer;
 
 module.exports = {
-	toPromise,
-	resolve,
-	registerGlobalInterceptor,
-	createPipeline,
-	createContainer
+	toPromise: toPromise,
+	resolve: resolve,
+	registerGlobalInterceptor: registerGlobalInterceptor,
+	createPipeline: createPipeline,
+	createContainer: createContainer
 };

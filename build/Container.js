@@ -61,6 +61,6 @@ var createContainer = function createContainer() {
 };
 
 module.exports = {
-	Container,
-	createContainer
+	Container: Container,
+	createContainer: createContainer
 };
